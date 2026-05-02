@@ -13,16 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileMenu = document.querySelector('.mobile-menu');
   hamburger?.addEventListener('click', () => {
     hamburger.classList.toggle('open');
-    mobileMenu?.classList.toggle('open');
-    document.body.style.overflow = mobileMenu?.classList.contains('open') ? 'hidden' : '';
-  });
-  mobileMenu?.querySelectorAll('a').forEach(link => {
+    const isOpen = mobileMenu?.classList.contains('open');
+    if (isOpen) {
+        mobileMenu.classList.remove('open');
+        mobileMenu.style.display = 'none';
+        document.body.style.overflow = '';
+    } else {
+        mobileMenu.style.display = 'flex';
+        setTimeout(() => mobileMenu?.classList.add('open'), 10);
+        document.body.style.overflow = 'hidden';
+    }
+});
+ mobileMenu?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       hamburger?.classList.remove('open');
       mobileMenu.classList.remove('open');
+      mobileMenu.style.display = 'none';
       document.body.style.overflow = '';
     });
-  });
+});
 
   // ── SCROLL REVEAL ─────────────────────────
   const reveals = document.querySelectorAll('.reveal');

@@ -42,6 +42,7 @@ class Service(models.Model):
     description = models.TextField()
     short_desc = models.CharField(max_length=300, blank=True)
     icon = models.CharField(max_length=10, blank=True, help_text='Emoji or icon class')
+    icon_image = models.ImageField(upload_to='services/icons/', null=True, blank=True)
     features = models.TextField(blank=True, help_text='Comma-separated features')
     slug = models.SlugField(unique=True)
     is_featured = models.BooleanField(default=False)

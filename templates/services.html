@@ -25,7 +25,14 @@
       <div class="services-grid">
         {% for service in svcs %}
         <div class="service-card reveal reveal-delay-{{ forloop.counter }}">
-          <div class="service-icon">{{ service.icon }}</div>
+        {% if service.icon_image %}
+<div style="width:100%;height:200px;overflow:hidden;margin-bottom:1.2rem;margin-left:-2rem;margin-right:-2rem;width:calc(100% + 4rem)">
+  <img src="{{ service.icon_image.url }}" alt="{{ service.name }}"
+       style="width:100%;height:100%;object-fit:cover">
+</div>
+{% else %}
+<div class="service-icon">{{ service.icon }}</div>
+{% endif %}
           <div class="service-cat">{{ service.get_category_display }}</div>
           <h3>{{ service.name }}</h3>
           <p style="font-size:0.85rem">{{ service.short_desc }}</p>

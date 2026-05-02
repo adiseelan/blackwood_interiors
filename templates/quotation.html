@@ -114,7 +114,7 @@
 
 {% block extra_js %}
 <script>
-const rates = {
+const rateMap = {
   'modular_kitchen':1200,'false_ceiling':85,'full_interior':1800,
   'wooden_flooring':180,'vinyl_flooring':120,'epoxy_flooring':150,'house_construction':2200
 };
@@ -124,7 +124,7 @@ const box = document.querySelector('#live-estimate-box');
 const result = document.querySelector('#live-estimate');
 function calc(){
   const s=svc?.value, a=parseInt(area?.value);
-  if(s && a && rates[s]){ result.textContent='₹'+(rates[s]*a).toLocaleString('en-IN'); box.style.display='block'; }
+  if(s && a && rateMap[s]){ result.textContent='₹'+(rateMap[s]*a).toLocaleString('en-IN'); box.style.display='block'; }
   else{ box.style.display='none'; }
 }
 svc?.addEventListener('change',calc); area?.addEventListener('input',calc);
