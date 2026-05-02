@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Black Wood Interiors – Luxury Interior Design{% endblock %}
+
+{% block content %}
+
+<!-- ── HERO ──────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-diagonal">
+    <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1208,#2a1f0a,#0d0d0d);display:flex;align-items:center;justify-content:center;font-size:8rem;opacity:0.3">🏡</div>
+  </div>
+  <div class="container" style="width:100%">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Luxury Interior & Architecture Studio</div>
+      <h1 class="hero-title">Design Your<br><em>Dream Space</em></h1>
+      <p class="hero-subtitle">From modular kitchens to full home interiors — we transform spaces into timeless works of art. Premium quality. End-to-end execution.</p>
+      <div class="hero-actions">
+        <a href="{% url 'consultation' %}" class="btn btn-gold">
+          Book Free Consultation
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+        </a>
+        <a href="{% url 'portfolio' %}" class="btn btn-outline">View Portfolio</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num"><span class="counter" data-target="250">0</span>+</div>
+          <div class="hero-stat-label">Projects Done</div>
+        </div>
+        <div>
+          <div class="hero-stat-num"><span class="counter" data-target="8">0</span>+</div>
+          <div class="hero-stat-label">Years Experience</div>
+        </div>
+        <div>
+          <div class="hero-stat-num"><span class="counter" data-target="98">0</span>%</div>
+          <div class="hero-stat-label">Client Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── SERVICES ───────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:3.5rem">
+      <div class="section-label">What We Do</div>
+      <div class="gold-line center"></div>
+      <h2 class="section-title">Our Services</h2>
+      <p style="max-width:500px;margin:1rem auto 0">Comprehensive interior and construction solutions tailored to your vision and budget.</p>
+    </div>
+
+    {% if services %}
+    <div class="services-grid">
+      {% for service in services %}
+      <div class="service-card reveal reveal-delay-{{ forloop.counter }}">
+        <div class="service-icon">{{ service.icon }}</div>
+        <div class="service-cat">{{ service.get_category_display }}</div>
+        <h3>{{ service.name }}</h3>
+        <p style="font-size:0.85rem">{{ service.short_desc }}</p>
+        {% if service.get_features_list %}
+        <ul class="service-features">
+          {% for feat in service.get_features_list %}
+          <li>{{ feat }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        <a href="{% url 'service_detail' service.slug %}" class="service-link">
+          Explore Service
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <!-- Default services when no DB data -->
+    <div class="services-grid">
+      {% for svc in "123456"|make_list %}
+      <div class="service-card reveal reveal-delay-{{ forloop.counter }}">
+        {% if forloop.counter == 1 %}
+          <div class="service-icon">🏠</div>
+          <div class="service-cat">Interior Design</div>
+          <h3>Interior Design & Execution</h3>
+          <p style="font-size:0.85rem">Complete interior transformation — from concept to completion.</p>
+          <ul class="service-features"><li>Modular Kitchen</li><li>False Ceiling</li><li>3D Wallpaper</li><li>Curtains & Blinds</li></ul>
+        {% elif forloop.counter == 2 %}
+          <div class="service-icon">🪵</div>
+          <div class="service-cat">Flooring</div>
+          <h3>Flooring Solutions</h3>
+          <p style="font-size:0.85rem">Premium flooring for every space and style.</p>
+          <ul class="service-features"><li>Wooden Flooring</li><li>Vinyl Flooring</li><li>Epoxy Flooring</li></ul>
+        {% elif forloop.counter == 3 %}
+          <div class="service-icon">🏗️</div>
+          <div class="service-cat">Construction</div>
+          <h3>Construction & Architecture</h3>
+          <p style="font-size:0.85rem">End-to-end building — from foundations to finishing.</p>
+          <ul class="service-features"><li>House Construction</li><li>Elevation Design</li><li>DTCP Approval</li></ul>
+        {% elif forloop.counter == 4 %}
+          <div class="service-icon">🌿</div>
+          <div class="service-cat">Outdoor</div>
+          <h3>Outdoor & Utility Services</h3>
+          <p style="font-size:0.85rem">Beautiful exteriors that complement your interiors.</p>
+          <ul class="service-features"><li>Landscape Design</li><li>Netlon Protection</li></ul>
+        {% elif forloop.counter == 5 %}
+          <div class="service-icon">🧭</div>
+          <div class="service-cat">Consultation</div>
+          <h3>Planning & Consultation</h3>
+          <p style="font-size:0.85rem">Expert guidance to plan your perfect space.</p>
+          <ul class="service-features"><li>Vastu Consultation</li><li>Design Consultation</li></ul>
+        {% else %}
+          <div class="service-icon">🍳</div>
+          <div class="service-cat">Kitchen</div>
+          <h3>Modular Kitchen</h3>
+          <p style="font-size:0.85rem">Smart, elegant kitchens built for modern living.</p>
+          <ul class="service-features"><li>Custom Design</li><li>Premium Materials</li><li>Full Execution</li></ul>
+        {% endif %}
+        <a href="{% url 'services' %}" class="service-link">
+          Explore Service
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div style="text-align:center;margin-top:2.5rem">
+      <a href="{% url 'services' %}" class="btn btn-outline-gold">View All Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS STRIP ──────────────────────── -->
+<section class="section-dark" style="padding:4rem 0">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <div class="section-label">How It Works</div>
+      <div class="gold-line center"></div>
+      <h2 class="section-title">Our Process</h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-number">01</div>
+        <h3 class="step-title">Consultation</h3>
+        <p class="step-desc">Free discussion to understand your vision, requirements, and budget.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-number">02</div>
+        <h3 class="step-title">Design & Planning</h3>
+        <p class="step-desc">3D renderings, material selection, and detailed project planning.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-number">03</div>
+        <h3 class="step-title">Execution</h3>
+        <p class="step-desc">Expert craftsmen bring your design to life with precision.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-number">04</div>
+        <h3 class="step-title">Handover</h3>
+        <p class="step-desc">Final walkthrough, quality check, and keys handed to you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PORTFOLIO PREVIEW ───────────────────── -->
+<section>
+  <div class="container">
+    <div class="reveal" style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1.5rem">
+      <div>
+        <div class="section-label">Our Work</div>
+        <div class="gold-line"></div>
+        <h2 class="section-title">Featured Projects</h2>
+      </div>
+      <a href="{% url 'portfolio' %}" class="btn btn-outline-gold btn-sm">View All Projects</a>
+    </div>
+
+    {% if featured_projects %}
+    <div class="portfolio-grid">
+      {% for project in featured_projects %}
+      <a href="{% url 'project_detail' project.pk %}" class="portfolio-item reveal">
+        {% if project.main_image %}
+        <img src="{{ project.main_image.url }}" alt="{{ project.title }}" class="portfolio-img">
+        {% else %}
+        <div class="portfolio-placeholder">
+          {% if project.category == 'kitchen' %}🍳
+          {% elif project.category == 'flooring' %}🪵
+          {% elif project.category == 'construction' %}🏗️
+          {% elif project.category == 'outdoor' %}🌿
+          {% else %}🏠{% endif %}
+        </div>
+        {% endif %}
+        <div class="portfolio-overlay">
+          <div class="portfolio-info">
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.get_category_display }}{% if project.location %} · {{ project.location }}{% endif %}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <!-- Demo portfolio grid -->
+    <div class="portfolio-grid">
+      {% for item in "123456"|make_list %}
+      <a href="{% url 'portfolio' %}" class="portfolio-item reveal">
+        <div class="portfolio-placeholder" style="background:linear-gradient(135deg,
+          {% if forloop.counter == 1 %}#1a1208,#2d1e0a
+          {% elif forloop.counter == 2 %}#0d1a10,#102014
+          {% elif forloop.counter == 3 %}#0a0d1a,#101422
+          {% elif forloop.counter == 4 %}#1a0d0a,#2a1208
+          {% elif forloop.counter == 5 %}#0a1a10,#0e2016
+          {% else %}#1a1a0a,#222210{% endif %})">
+          <span style="font-size:{% if forloop.counter == 1 %}5rem{% else %}3rem{% endif %}">
+            {% if forloop.counter == 1 %}🏠{% elif forloop.counter == 2 %}🍳{% elif forloop.counter == 3 %}🪵{% elif forloop.counter == 4 %}🏗️{% elif forloop.counter == 5 %}🌿{% else %}🛋️{% endif %}
+          </span>
+        </div>
+        <div class="portfolio-overlay">
+          <div class="portfolio-info">
+            <h3>{% if forloop.counter == 1 %}Luxury Villa Interior{% elif forloop.counter == 2 %}Modular Kitchen{% elif forloop.counter == 3 %}Wooden Flooring{% elif forloop.counter == 4 %}Modern Construction{% elif forloop.counter == 5 %}Landscape Design{% else %}Living Room Design{% endif %}</h3>
+            <p>{% if forloop.counter == 1 %}Interiors · Chennai{% elif forloop.counter == 2 %}Kitchen · Bangalore{% elif forloop.counter == 3 %}Flooring · Chennai{% elif forloop.counter == 4 %}Construction · Chennai{% elif forloop.counter == 5 %}Outdoor · Bangalore{% else %}Interiors · Chennai{% endif %}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ── PACKAGES PREVIEW ────────────────────── -->
+<section class="section-dark">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:1rem">
+      <div class="section-label">Pricing</div>
+      <div class="gold-line center"></div>
+      <h2 class="section-title">Our Packages</h2>
+      <p style="max-width:480px;margin:1rem auto 0">Transparent, all-inclusive packages for every need and budget.</p>
+    </div>
+
+    {% if packages %}
+    <div class="packages-grid">
+      {% for pkg in packages %}
+      <div class="package-card {% if pkg.is_popular %}popular{% endif %} reveal reveal-delay-{{ forloop.counter }}">
+        {% if pkg.is_popular %}<div class="popular-badge">Most Popular</div>{% endif %}
+        <div class="package-name">{{ pkg.name }}</div>
+        <p style="font-size:0.82rem;color:var(--grey)">{{ pkg.subtitle }}</p>
+        <div class="package-price">₹{{ pkg.price_starting|floatformat:0 }}<span> {{ pkg.price_unit }}</span></div>
+        <ul class="package-list">
+          {% for item in pkg.get_inclusions_list %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-gold" style="width:100%;justify-content:center">Get This Package</a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="packages-grid">
+      <div class="package-card reveal">
+        <div class="package-name">2BHK Starter</div>
+        <p style="font-size:0.82rem;color:var(--grey)">Perfect for compact living</p>
+        <div class="package-price">₹1,200<span> per sq.ft</span></div>
+        <ul class="package-list">
+          <li>Living Room Design</li><li>2 Bedrooms</li><li>Kitchen Basics</li><li>False Ceiling</li><li>Electrical & Plumbing</li>
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-outline-gold" style="width:100%;justify-content:center">Get Quote</a>
+      </div>
+      <div class="package-card popular reveal reveal-delay-1">
+        <div class="popular-badge">Most Popular</div>
+        <div class="package-name">Full Home Premium</div>
+        <p style="font-size:0.82rem;color:var(--grey)">Complete transformation</p>
+        <div class="package-price">₹1,800<span> per sq.ft</span></div>
+        <ul class="package-list">
+          <li>All Rooms Designed</li><li>Modular Kitchen</li><li>Premium Flooring</li><li>Custom Wardrobes</li><li>False Ceiling + Lighting</li><li>Vastu Consultation</li>
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-gold" style="width:100%;justify-content:center">Get This Package</a>
+      </div>
+      <div class="package-card reveal reveal-delay-2">
+        <div class="package-name">Luxury Villa</div>
+        <p style="font-size:0.82rem;color:var(--grey)">Ultra-premium execution</p>
+        <div class="package-price">₹2,500<span> per sq.ft</span></div>
+        <ul class="package-list">
+          <li>Complete Interior Design</li><li>Import Materials</li><li>Smart Home Integration</li><li>Landscape Design</li><li>3D Walkthrough</li><li>Dedicated Project Manager</li>
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-outline-gold" style="width:100%;justify-content:center">Get Quote</a>
+      </div>
+    </div>
+    {% endif %}
+    <div style="text-align:center;margin-top:2rem">
+      <a href="{% url 'packages' %}" class="btn btn-outline">View All Packages</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ───────────────────────── -->
+{% if testimonials %}
+<section>
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <div class="section-label">Client Stories</div>
+      <div class="gold-line center"></div>
+      <h2 class="section-title">What Our Clients Say</h2>
+    </div>
+    <div class="testimonials-grid">
+      {% for t in testimonials %}
+      <div class="testimonial-card reveal reveal-delay-{{ forloop.counter }}">
+        <div class="stars">{% for i in "12345"|make_list %}<span class="star">★</span>{% endfor %}</div>
+        <p class="testimonial-text">{{ t.review }}</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">{{ t.client_name|first }}</div>
+          <div><div class="author-name">{{ t.client_name }}</div><div class="author-location">{{ t.location }} · {{ t.project_type }}</div></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% else %}
+<section>
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <div class="section-label">Client Stories</div>
+      <div class="gold-line center"></div>
+      <h2 class="section-title">What Our Clients Say</h2>
+    </div>
+    <div class="testimonials-grid">
+      {% for t in "123"|make_list %}
+      <div class="testimonial-card reveal reveal-delay-{{ forloop.counter }}">
+        <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testimonial-text">
+          {% if forloop.counter == 1 %}Black Wood Interiors transformed our apartment beyond expectations. The attention to detail is incredible — every corner feels intentional and luxurious.
+          {% elif forloop.counter == 2 %}The team handled our entire 3BHK renovation in 6 weeks flat. Professional, punctual, and the results are stunning. Our kitchen is magazine-worthy!
+          {% else %}From Vastu consultation to final handover, the entire process was smooth. The 3D designs helped us visualize perfectly. Highly recommended!{% endif %}
+        </p>
+        <div class="testimonial-author">
+          <div class="author-avatar">{% if forloop.counter == 1 %}R{% elif forloop.counter == 2 %}K{% else %}P{% endif %}</div>
+          <div>
+            <div class="author-name">{% if forloop.counter == 1 %}Rajan Sharma{% elif forloop.counter == 2 %}Kavitha Nair{% else %}Priya Sundaram{% endif %}</div>
+            <div class="author-location">{% if forloop.counter == 1 %}Chennai · Full Home Interior{% elif forloop.counter == 2 %}Bangalore · Modular Kitchen{% else %}Chennai · 3BHK Renovation{% endif %}</div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ── CTA STRIP ──────────────────────────── -->
+<section style="padding:5rem 0;background:linear-gradient(135deg,#0d0b05,#1a1208,#0d0b05);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container" style="text-align:center">
+    <div class="reveal">
+      <div class="section-label">Get Started</div>
+      <div class="gold-line center"></div>
+      <h2 class="section-title" style="margin-bottom:1rem">Ready to Transform<br><em style="font-style:italic;color:var(--gold)">Your Space?</em></h2>
+      <p style="max-width:480px;margin:0 auto 2.5rem">Book a free consultation today. Our experts will visit your site and provide a detailed quotation — no commitment required.</p>
+      <div style="display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap">
+        <a href="{% url 'consultation' %}" class="btn btn-gold">
+          Book Free Consultation
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+        </a>
+        <a href="https://wa.me/{{ whatsapp_number }}" target="_blank" class="btn btn-whatsapp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat on WhatsApp
+        </a>
+        <a href="{% url 'quotation' %}" class="btn btn-outline">Get Instant Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LEAD CAPTURE ───────────────────────── -->
+<section>
+  <div class="container-sm">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <div class="section-label">Quick Enquiry</div>
+      <div class="gold-line center"></div>
+      <h2 class="section-title">We'll Call You Back</h2>
+      <p style="max-width:420px;margin:1rem auto 0">Leave your details and our design consultant will call you within 2 hours.</p>
+    </div>
+    <form method="post" action="{% url 'submit_lead' %}" class="ajax-lead-form reveal">
+      {% csrf_token %}
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" name="name" class="form-input" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number *</label>
+          <input type="tel" name="phone" class="form-input" placeholder="+91 XXXXX XXXXX" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Location</label>
+          <input type="text" name="location" class="form-input" placeholder="City / Area">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Budget Range</label>
+          <select name="budget" class="form-input form-select">
+            <option value="">Select Budget</option>
+            <option value="below_5">Below ₹5 Lakhs</option>
+            <option value="5_10">₹5 – ₹10 Lakhs</option>
+            <option value="10_25">₹10 – ₹25 Lakhs</option>
+            <option value="25_50">₹25 – ₹50 Lakhs</option>
+            <option value="above_50">Above ₹50 Lakhs</option>
+          </select>
+        </div>
+        <div class="form-group form-full">
+          <label class="form-label">Service Interested In</label>
+          <input type="text" name="service" class="form-input" placeholder="e.g. Modular Kitchen, Full Interior, Flooring...">
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:1.5rem">
+        <button type="submit" class="btn btn-gold" style="min-width:220px">
+          Request Callback
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+{% endblock %}

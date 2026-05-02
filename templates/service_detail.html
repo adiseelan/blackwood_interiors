@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ service.name }}{% endblock %}
+{% block meta_desc %}{{ service.short_desc }}{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">{{ service.get_category_display }}</div>
+    <div class="gold-line"></div>
+    <h1 class="section-title">{{ service.name }}</h1>
+    {% if service.short_desc %}
+    <p style="max-width:520px;margin-top:1rem;color:rgba(255,255,255,0.55)">{{ service.short_desc }}</p>
+    {% endif %}
+    <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap">
+      <a href="{% url 'consultation' %}" class="btn btn-gold">Book Consultation</a>
+      <a href="{% url 'quotation' %}" class="btn btn-outline">Get Quote</a>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start" class="reveal">
+      <div>
+        <div class="section-label">About This Service</div>
+        <div class="gold-line"></div>
+        <h2 class="section-title" style="font-size:2rem;margin-bottom:1.5rem">{{ service.name }}</h2>
+        <div style="font-size:0.95rem;line-height:1.9;color:rgba(255,255,255,0.7)">{{ service.description|linebreaks }}</div>
+      </div>
+      <div>
+        {% if service.get_features_list %}
+        <div style="border:1px solid var(--border);padding:2.5rem">
+          <div class="section-label" style="margin-bottom:1rem">What's Included</div>
+          <ul style="list-style:none">
+            {% for feat in service.get_features_list %}
+            <li style="padding:0.8rem 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:0.8rem;font-size:0.9rem;color:rgba(255,255,255,0.8)">
+              <span style="color:var(--gold);font-size:1rem">✓</span>{{ feat }}
+            </li>
+            {% endfor %}
+          </ul>
+          <div style="margin-top:2rem">
+            <a href="{% url 'consultation' %}" class="btn btn-gold" style="width:100%;justify-content:center">Book This Service</a>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if projects %}
+<section class="section-dark">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:3rem">
+      <div class="section-label">Our Work</div>
+      <div class="gold-line"></div>
+      <h2 class="section-title">Related Projects</h2>
+    </div>
+    <div class="portfolio-grid">
+      {% for project in projects %}
+      <a href="{% url 'project_detail' project.pk %}" class="portfolio-item reveal">
+        {% if project.main_image %}
+        <img src="{{ project.main_image.url }}" alt="{{ project.title }}" class="portfolio-img">
+        {% else %}
+        <div class="portfolio-placeholder">🏠</div>
+        {% endif %}
+        <div class="portfolio-overlay">
+          <div class="portfolio-info">
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.get_category_display }}{% if project.location %} · {{ project.location }}{% endif %}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if related %}
+<section>
+  <div class="container">
+    <div class="reveal" style="margin-bottom:2.5rem">
+      <div class="section-label">Related Services</div>
+      <div class="gold-line"></div>
+      <h2 class="section-title">You May Also Like</h2>
+    </div>
+    <div class="services-grid">
+      {% for svc in related %}
+      <div class="service-card reveal reveal-delay-{{ forloop.counter }}">
+        <div class="service-icon">{{ svc.icon }}</div>
+        <div class="service-cat">{{ svc.get_category_display }}</div>
+        <h3>{{ svc.name }}</h3>
+        <p style="font-size:0.85rem">{{ svc.short_desc }}</p>
+        <a href="{% url 'service_detail' svc.slug %}" class="service-link">Learn More <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg></a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section style="padding:5rem 0;background:linear-gradient(135deg,#0d0b05,#1a1208);border-top:1px solid var(--border)">
+  <div class="container" style="text-align:center">
+    <div class="reveal">
+      <h2 class="section-title">Interested in <em style="color:var(--gold);font-style:italic">{{ service.name }}</em>?</h2>
+      <p style="margin:1rem auto 2rem;max-width:400px">Get a free site visit and detailed quotation within 24 hours.</p>
+      <a href="{% url 'consultation' %}" class="btn btn-gold">Book Free Consultation</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

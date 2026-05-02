@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Services{% endblock %}
+
+{% block content %}
+
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">What We Offer</div>
+    <div class="gold-line"></div>
+    <h1 class="section-title" style="max-width:600px">Premium Interior &<br><em style="font-style:italic;color:var(--gold)">Architecture Services</em></h1>
+    <p style="max-width:480px;margin-top:1rem;color:rgba(255,255,255,0.55)">From modular kitchens to complete home construction — we handle everything with precision and passion.</p>
+  </div>
+</div>
+
+{% if categories %}
+  {% for cat_name, svcs in categories.items %}
+  <section {% if forloop.counter|divisibleby:2 %}class="section-dark"{% endif %}>
+    <div class="container">
+      <div class="reveal" style="margin-bottom:3rem">
+        <div class="section-label">{{ cat_name }}</div>
+        <div class="gold-line"></div>
+      </div>
+      <div class="services-grid">
+        {% for service in svcs %}
+        <div class="service-card reveal reveal-delay-{{ forloop.counter }}">
+          <div class="service-icon">{{ service.icon }}</div>
+          <div class="service-cat">{{ service.get_category_display }}</div>
+          <h3>{{ service.name }}</h3>
+          <p style="font-size:0.85rem">{{ service.short_desc }}</p>
+          {% if service.get_features_list %}
+          <ul class="service-features">
+            {% for feat in service.get_features_list %}
+            <li>{{ feat }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <a href="{% url 'service_detail' service.slug %}" class="service-link">
+            Learn More
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endfor %}
+
+{% else %}
+<!-- Default service categories when no DB data -->
+
+<section>
+  <div class="container">
+    <div class="reveal" style="margin-bottom:3rem">
+      <div class="section-label">Interior Design & Execution</div>
+      <div class="gold-line"></div>
+    </div>
+    <div class="services-grid">
+      {% for s in "1234"|make_list %}
+      <div class="service-card reveal reveal-delay-{{ forloop.counter }}">
+        {% if forloop.counter == 1 %}
+          <div class="service-icon">🍳</div>
+          <div class="service-cat">Interior Design</div>
+          <h3>Modular Kitchen</h3>
+          <p style="font-size:0.85rem">Custom modular kitchens designed for efficiency and elegance. Premium materials and fittings.</p>
+          <ul class="service-features"><li>Custom Design</li><li>Soft-close Hardware</li><li>Premium Laminates</li><li>Full Execution</li></ul>
+        {% elif forloop.counter == 2 %}
+          <div class="service-icon">✨</div>
+          <div class="service-cat">Interior Design</div>
+          <h3>False Ceiling</h3>
+          <p style="font-size:0.85rem">Designer false ceilings with integrated lighting for a dramatic, polished look.</p>
+          <ul class="service-features"><li>Gypsum & POP</li><li>LED Integration</li><li>Cove Lighting</li><li>Custom Profiles</li></ul>
+        {% elif forloop.counter == 3 %}
+          <div class="service-icon">🖼️</div>
+          <div class="service-cat">Interior Design</div>
+          <h3>3D Wallpaper</h3>
+          <p style="font-size:0.85rem">Stunning textured and 3D wallpapers that add depth and personality to any room.</p>
+          <ul class="service-features"><li>Import Designs</li><li>Waterproof Options</li><li>Custom Prints</li></ul>
+        {% else %}
+          <div class="service-icon">🪟</div>
+          <div class="service-cat">Interior Design</div>
+          <h3>Curtains & Blinds</h3>
+          <p style="font-size:0.85rem">Premium curtains, roller blinds, and motorized solutions for complete privacy and style.</p>
+          <ul class="service-features"><li>Motorized Blinds</li><li>Blackout Options</li><li>Custom Stitching</li></ul>
+        {% endif %}
+        <a href="{% url 'consultation' %}" class="service-link">Get Quote <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg></a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:3rem">
+      <div class="section-label">Flooring Solutions</div>
+      <div class="gold-line"></div>
+    </div>
+    <div class="services-grid">
+      {% for s in "123"|make_list %}
+      <div class="service-card reveal reveal-delay-{{ forloop.counter }}">
+        {% if forloop.counter == 1 %}
+          <div class="service-icon">🪵</div>
+          <div class="service-cat">Flooring</div>
+          <h3>Wooden Flooring</h3>
+          <p style="font-size:0.85rem">Engineered and solid hardwood flooring for timeless warmth and luxury.</p>
+          <ul class="service-features"><li>Solid & Engineered</li><li>Multiple Finishes</li><li>Anti-termite Treatment</li><li>10 Year Warranty</li></ul>
+        {% elif forloop.counter == 2 %}
+          <div class="service-icon">🏁</div>
+          <div class="service-cat">Flooring</div>
+          <h3>Vinyl Flooring</h3>
+          <p style="font-size:0.85rem">Waterproof, durable vinyl flooring — ideal for kitchens, bathrooms, and commercial spaces.</p>
+          <ul class="service-features"><li>100% Waterproof</li><li>Easy Maintenance</li><li>Wood & Stone Look</li><li>Scratch Resistant</li></ul>
+        {% else %}
+          <div class="service-icon">🔵</div>
+          <div class="service-cat">Flooring</div>
+          <h3>Epoxy Flooring</h3>
+          <p style="font-size:0.85rem">Seamless, high-gloss epoxy floors for a sleek, industrial-luxe aesthetic.</p>
+          <ul class="service-features"><li>Seamless Finish</li><li>Chemical Resistant</li><li>Custom Colors</li><li>Metallic Options</li></ul>
+        {% endif %}
+        <a href="{% url 'consultation' %}" class="service-link">Get Quote <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg></a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="reveal" style="margin-bottom:3rem">
+      <div class="section-label">Construction & Architecture</div>
+      <div class="gold-line"></div>
+    </div>
+    <div class="services-grid">
+      {% for s in "1234"|make_list %}
+      <div class="service-card reveal reveal-delay-{{ forloop.counter }}">
+        {% if forloop.counter == 1 %}
+          <div class="service-icon">🏗️</div>
+          <div class="service-cat">Construction</div>
+          <h3>House Construction</h3>
+          <p style="font-size:0.85rem">End-to-end home construction with the finest materials and skilled labour.</p>
+          <ul class="service-features"><li>Foundation to Finish</li><li>Structural Planning</li><li>Quality Materials</li><li>Timeline Guarantee</li></ul>
+        {% elif forloop.counter == 2 %}
+          <div class="service-icon">🏛️</div>
+          <div class="service-cat">Construction</div>
+          <h3>Elevation Design</h3>
+          <p style="font-size:0.85rem">Stunning façade designs that make your home stand out from the street.</p>
+          <ul class="service-features"><li>3D Visualization</li><li>Modern & Classic</li><li>Material Selection</li></ul>
+        {% elif forloop.counter == 3 %}
+          <div class="service-icon">📐</div>
+          <div class="service-cat">Construction</div>
+          <h3>Structural Planning</h3>
+          <p style="font-size:0.85rem">Expert structural engineering for safe, durable, and earthquake-resistant buildings.</p>
+          <ul class="service-features"><li>Structural Analysis</li><li>Load Calculation</li><li>Safety Certified</li></ul>
+        {% else %}
+          <div class="service-icon">📋</div>
+          <div class="service-cat">Construction</div>
+          <h3>DTCP Approval</h3>
+          <p style="font-size:0.85rem">Complete legal approval support — from plan submission to final DTCP clearance.</p>
+          <ul class="service-features"><li>Plan Preparation</li><li>Approval Submission</li><li>Legal Compliance</li></ul>
+        {% endif %}
+        <a href="{% url 'consultation' %}" class="service-link">Get Quote <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg></a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:3rem">
+      <div class="section-label">Outdoor & Consultation</div>
+      <div class="gold-line"></div>
+    </div>
+    <div class="services-grid">
+      {% for s in "1234"|make_list %}
+      <div class="service-card reveal reveal-delay-{{ forloop.counter }}">
+        {% if forloop.counter == 1 %}
+          <div class="service-icon">🌿</div>
+          <div class="service-cat">Outdoor</div>
+          <h3>Landscape Design</h3>
+          <p style="font-size:0.85rem">Transform your outdoor spaces with lush, functional landscape design.</p>
+          <ul class="service-features"><li>Garden Planning</li><li>Hardscape Design</li><li>Irrigation Systems</li></ul>
+        {% elif forloop.counter == 2 %}
+          <div class="service-icon">🦟</div>
+          <div class="service-cat">Outdoor</div>
+          <h3>Netlon Installation</h3>
+          <p style="font-size:0.85rem">High-quality mosquito protection nets for windows, doors, and balconies.</p>
+          <ul class="service-features"><li>All Window Types</li><li>UV Resistant</li><li>Easy Maintenance</li></ul>
+        {% elif forloop.counter == 3 %}
+          <div class="service-icon">🧭</div>
+          <div class="service-cat">Consultation</div>
+          <h3>Vastu Consultation</h3>
+          <p style="font-size:0.85rem">Expert Vastu Shastra guidance integrated seamlessly into modern design.</p>
+          <ul class="service-features"><li>Direction Analysis</li><li>Space Optimization</li><li>Energy Flow</li></ul>
+        {% else %}
+          <div class="service-icon">💡</div>
+          <div class="service-cat">Consultation</div>
+          <h3>Design Consultation</h3>
+          <p style="font-size:0.85rem">One-on-one design sessions to plan your dream space with our expert designers.</p>
+          <ul class="service-features"><li>Mood Board Creation</li><li>3D Visualization</li><li>Budget Planning</li></ul>
+        {% endif %}
+        <a href="{% url 'consultation' %}" class="service-link">Book Now <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2"/></svg></a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- CTA -->
+<section style="padding:5rem 0;background:linear-gradient(135deg,#0d0b05,#1a1208,#0d0b05);border-top:1px solid var(--border)">
+  <div class="container" style="text-align:center">
+    <div class="reveal">
+      <h2 class="section-title">Not Sure Which Service?</h2>
+      <p style="max-width:420px;margin:1rem auto 2rem">Talk to our experts — we'll recommend the perfect solution for your space and budget.</p>
+      <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap">
+        <a href="{% url 'consultation' %}" class="btn btn-gold">Book Free Consultation</a>
+        <a href="{% url 'quotation' %}" class="btn btn-outline">Get Instant Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

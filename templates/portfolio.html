@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Our Work</div>
+    <div class="gold-line"></div>
+    <h1 class="section-title">Project Portfolio</h1>
+    <p style="max-width:480px;margin-top:1rem;color:rgba(255,255,255,0.55)">250+ projects delivered across Chennai and Bangalore — each one a story of craftsmanship and care.</p>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="portfolio-filters reveal">
+      <button class="filter-btn {% if not active_category %}active{% endif %}" data-category="all">All Projects</button>
+      <button class="filter-btn {% if active_category == 'interiors' %}active{% endif %}" data-category="interiors">Interiors</button>
+      <button class="filter-btn {% if active_category == 'kitchen' %}active{% endif %}" data-category="kitchen">Kitchen</button>
+      <button class="filter-btn {% if active_category == 'flooring' %}active{% endif %}" data-category="flooring">Flooring</button>
+      <button class="filter-btn {% if active_category == 'construction' %}active{% endif %}" data-category="construction">Construction</button>
+      <button class="filter-btn {% if active_category == 'outdoor' %}active{% endif %}" data-category="outdoor">Outdoor</button>
+    </div>
+
+    {% if projects %}
+    <div class="portfolio-grid">
+      {% for project in projects %}
+      <a href="{% url 'project_detail' project.pk %}" class="portfolio-item reveal">
+        {% if project.main_image %}
+        <img src="{{ project.main_image.url }}" alt="{{ project.title }}" class="portfolio-img">
+        {% else %}
+        <div class="portfolio-placeholder">
+          {% if project.category == 'kitchen' %}🍳
+          {% elif project.category == 'flooring' %}🪵
+          {% elif project.category == 'construction' %}🏗️
+          {% elif project.category == 'outdoor' %}🌿
+          {% else %}🏠{% endif %}
+        </div>
+        {% endif %}
+        <div class="portfolio-overlay">
+          <div class="portfolio-info">
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.get_category_display }}{% if project.location %} · {{ project.location }}{% endif %}{% if project.area_sqft %} · {{ project.area_sqft }} sqft{% endif %}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <!-- Demo portfolio -->
+    <div class="portfolio-grid">
+      {% for i in "123456789"|make_list %}
+      <a href="#" class="portfolio-item reveal">
+        <div class="portfolio-placeholder" style="background:linear-gradient(135deg,
+          {% cycle '#1a1208,#2d1e0a' '#0d1a10,#102014' '#0a0d1a,#101422' '#1a0d0a,#2a1208' '#0a1a10,#0e2016' '#1a1a0a,#222210' '#180d1a,#22103a' '#0a1418,#0e2228' '#1a1410,#2a1e14' %})">
+          <span style="font-size:3rem">
+            {% cycle '🏠' '🍳' '🪵' '🏗️' '🌿' '🛋️' '🏛️' '🪟' '✨' %}
+          </span>
+        </div>
+        <div class="portfolio-overlay">
+          <div class="portfolio-info">
+            <h3>{% cycle 'Luxury Villa Interior' 'Premium Kitchen' 'Hardwood Flooring' 'Residential Construction' 'Garden Landscape' 'Living Room Makeover' 'Elevation Design' 'Bedroom Design' 'False Ceiling' %}</h3>
+            <p>{% cycle 'Interiors · Chennai' 'Kitchen · Bangalore' 'Flooring · Chennai' 'Construction · Chennai' 'Outdoor · Bangalore' 'Interiors · Chennai' 'Construction · Bangalore' 'Interiors · Chennai' 'Interiors · Bangalore' %}</p>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Stats bar -->
+<section style="padding:4rem 0;background:#060606;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center">
+      {% for stat in "1234"|make_list %}
+      <div class="reveal reveal-delay-{{ forloop.counter }}">
+        <div style="font-family:var(--font-serif);font-size:3rem;color:var(--gold)">
+          {% if forloop.counter == 1 %}<span class="counter" data-target="250">0</span>+
+          {% elif forloop.counter == 2 %}<span class="counter" data-target="8">0</span>+
+          {% elif forloop.counter == 3 %}<span class="counter" data-target="2">0</span>
+          {% else %}<span class="counter" data-target="98">0</span>%{% endif %}
+        </div>
+        <div style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:0.4rem">
+          {% if forloop.counter == 1 %}Projects Completed
+          {% elif forloop.counter == 2 %}Years Experience
+          {% elif forloop.counter == 3 %}Cities
+          {% else %}Client Satisfaction{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section style="padding:5rem 0">
+  <div class="container" style="text-align:center">
+    <div class="reveal">
+      <h2 class="section-title">Have a Project in Mind?</h2>
+      <p style="margin:1rem auto 2rem;max-width:400px">Let's discuss your vision and bring it to life.</p>
+      <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap">
+        <a href="{% url 'consultation' %}" class="btn btn-gold">Book Consultation</a>
+        <a href="{% url 'quotation' %}" class="btn btn-outline">Get Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

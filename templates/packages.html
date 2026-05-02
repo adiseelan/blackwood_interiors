@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Packages & Pricing{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Transparent Pricing</div>
+    <div class="gold-line"></div>
+    <h1 class="section-title">Our Packages</h1>
+    <p style="max-width:500px;margin-top:1rem;color:rgba(255,255,255,0.55)">All-inclusive packages designed for every budget. No hidden costs, no surprises — just exceptional results.</p>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    {% if packages %}
+    <div class="packages-grid">
+      {% for pkg in packages %}
+      <div class="package-card {% if pkg.is_popular %}popular{% endif %} reveal reveal-delay-{{ forloop.counter }}">
+        {% if pkg.is_popular %}<div class="popular-badge">Most Popular</div>{% endif %}
+        <div class="package-name">{{ pkg.name }}</div>
+        <p style="font-size:0.82rem;color:var(--grey)">{{ pkg.subtitle }}</p>
+        <div class="package-price">₹{{ pkg.price_starting|floatformat:0 }}<span> {{ pkg.price_unit }}</span></div>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:1rem">{{ pkg.description }}</p>
+        <ul class="package-list">
+          {% for item in pkg.get_inclusions_list %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn {% if pkg.is_popular %}btn-gold{% else %}btn-outline-gold{% endif %}" style="width:100%;justify-content:center;margin-top:1rem">
+          Get This Package
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <!-- Default packages -->
+    <div class="packages-grid">
+
+      <!-- Starter -->
+      <div class="package-card reveal">
+        <div class="package-name">2BHK Starter</div>
+        <p style="font-size:0.82rem;color:var(--grey)">Essential interior for compact homes</p>
+        <div class="package-price">₹1,200<span> per sq.ft</span></div>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:1rem">Smart design solutions for 2BHK apartments up to 800 sq.ft.</p>
+        <ul class="package-list">
+          <li>Living & Dining Design</li><li>2 Bedroom Interiors</li>
+          <li>Basic Modular Kitchen</li><li>False Ceiling (2 rooms)</li>
+          <li>Wardrobe (2 units)</li><li>TV Unit</li>
+          <li>Paint & Wallpaper</li><li>Electrical Work</li>
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-outline-gold" style="width:100%;justify-content:center;margin-top:1rem">Get This Package</a>
+      </div>
+
+      <!-- Premium -->
+      <div class="package-card popular reveal reveal-delay-1">
+        <div class="popular-badge">Most Popular</div>
+        <div class="package-name">Full Home Premium</div>
+        <p style="font-size:0.82rem;color:var(--grey)">Complete transformation — best value</p>
+        <div class="package-price">₹1,800<span> per sq.ft</span></div>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:1rem">Head-to-toe redesign for 3BHK homes with premium finishes.</p>
+        <ul class="package-list">
+          <li>All Rooms Designed</li><li>Premium Modular Kitchen</li>
+          <li>Engineered Wood Flooring</li><li>Designer False Ceiling</li>
+          <li>Custom Wardrobes (all rooms)</li><li>Crockery Unit</li>
+          <li>Premium Paint & 3D Wallpaper</li><li>Vastu Consultation</li>
+          <li>3D Design Visualization</li><li>Project Manager Assigned</li>
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-gold" style="width:100%;justify-content:center;margin-top:1rem">Get This Package</a>
+      </div>
+
+      <!-- Luxury -->
+      <div class="package-card reveal reveal-delay-2">
+        <div class="package-name">Luxury Villa</div>
+        <p style="font-size:0.82rem;color:var(--grey)">Ultra-premium, no-compromise design</p>
+        <div class="package-price">₹2,500<span> per sq.ft</span></div>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:1rem">For those who demand only the finest — imported materials and bespoke craftsmanship.</p>
+        <ul class="package-list">
+          <li>Full Interior + Architecture</li><li>Imported Kitchen Hardware</li>
+          <li>Solid Wood / Marble Flooring</li><li>Decorative Lighting Design</li>
+          <li>Smart Home Integration</li><li>Landscape Design</li>
+          <li>Video Walkthrough</li><li>Dedicated Senior Designer</li>
+          <li>Post-completion Support</li><li>2-Year Warranty</li>
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-outline-gold" style="width:100%;justify-content:center;margin-top:1rem">Get This Package</a>
+      </div>
+
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Kitchen Package -->
+<section class="section-dark">
+  <div class="container">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <div class="section-label">Specialized</div>
+      <div class="gold-line center"></div>
+      <h2 class="section-title">Kitchen Packages</h2>
+    </div>
+    <div class="packages-grid">
+      <div class="package-card reveal">
+        <div class="package-name">Kitchen Essentials</div>
+        <p style="font-size:0.82rem;color:var(--grey)">For small to medium kitchens</p>
+        <div class="package-price">₹1,00,000<span> onwards</span></div>
+        <ul class="package-list">
+          <li>10 Running Ft Cabinet</li><li>Standard Laminates</li>
+          <li>Soft-close Hinges</li><li>Granite Counter</li><li>Basic Hardware</li>
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-outline-gold" style="width:100%;justify-content:center;margin-top:1rem">Book Now</a>
+      </div>
+      <div class="package-card popular reveal reveal-delay-1">
+        <div class="popular-badge">Best Seller</div>
+        <div class="package-name">Kitchen Premium</div>
+        <p style="font-size:0.82rem;color:var(--grey)">The perfect functional kitchen</p>
+        <div class="package-price">₹1,80,000<span> onwards</span></div>
+        <ul class="package-list">
+          <li>15 Running Ft Cabinet</li><li>Acrylic / PU Finish</li>
+          <li>Tandem Drawers</li><li>Quartz Countertop</li>
+          <li>Chimney + Hob</li><li>Backsplash Tiles</li>
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-gold" style="width:100%;justify-content:center;margin-top:1rem">Book Now</a>
+      </div>
+      <div class="package-card reveal reveal-delay-2">
+        <div class="package-name">Kitchen Luxury</div>
+        <p style="font-size:0.82rem;color:var(--grey)">Chef-grade premium kitchen</p>
+        <div class="package-price">₹3,00,000<span> onwards</span></div>
+        <ul class="package-list">
+          <li>Full Custom Design</li><li>Import Handle-less Cabinets</li>
+          <li>Marble / Granite Slab</li><li>Built-in Appliances</li>
+          <li>Island Counter Option</li><li>Hidden Lighting</li>
+        </ul>
+        <a href="{% url 'consultation' %}" class="btn btn-outline-gold" style="width:100%;justify-content:center;margin-top:1rem">Book Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container-sm">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem">
+      <div class="section-label">FAQ</div>
+      <div class="gold-line center"></div>
+      <h2 class="section-title">Common Questions</h2>
+    </div>
+    {% for q in "1234"|make_list %}
+    <div class="reveal" style="border-bottom:1px solid var(--border);padding:1.5rem 0">
+      <details style="cursor:pointer">
+        <summary style="font-family:var(--font-serif);font-size:1.15rem;list-style:none;display:flex;justify-content:space-between;align-items:center">
+          {% if forloop.counter == 1 %}What is included in the site visit?
+          {% elif forloop.counter == 2 %}How long does a full home interior take?
+          {% elif forloop.counter == 3 %}Do you provide material warranty?
+          {% else %}Can I customize the package?{% endif %}
+          <span style="color:var(--gold);font-size:1.5rem;transition:transform 0.3s">+</span>
+        </summary>
+        <p style="font-size:0.88rem;color:rgba(255,255,255,0.6);margin-top:1rem;line-height:1.8;padding-right:2rem">
+          {% if forloop.counter == 1 %}Our site visit includes a thorough space analysis, measurement, requirement gathering, style consultation, and a preliminary budget estimate — all completely free.
+          {% elif forloop.counter == 2 %}Typically 45–90 days depending on the scope. A 2BHK takes about 45 days; a full villa can take 3–4 months. We provide a detailed timeline before work begins.
+          {% elif forloop.counter == 3 %}Yes — we provide 1-year warranty on workmanship and 2-year warranty on Luxury package. Material warranties apply as per manufacturer terms.
+          {% else %}Absolutely. All packages are fully customizable. You can add or remove services, upgrade materials, or mix elements from multiple packages to suit your needs.{% endif %}
+        </p>
+      </details>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section style="padding:5rem 0;background:linear-gradient(135deg,#0d0b05,#1a1208);border-top:1px solid var(--border)">
+  <div class="container" style="text-align:center">
+    <div class="reveal">
+      <h2 class="section-title">Not Sure Which Package?</h2>
+      <p style="margin:1rem auto 2rem;max-width:400px">Book a free consultation — our expert will recommend the perfect package for your space and budget.</p>
+      <a href="{% url 'consultation' %}" class="btn btn-gold">Book Free Consultation</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

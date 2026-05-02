@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <a href="{% url 'portfolio' %}" style="font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;margin-bottom:1.5rem">
+      ← Back to Portfolio
+    </a>
+    <div class="section-label">{{ project.get_category_display }}</div>
+    <div class="gold-line"></div>
+    <h1 class="section-title">{{ project.title }}</h1>
+    <div style="display:flex;gap:2rem;margin-top:1rem;flex-wrap:wrap">
+      {% if project.location %}<span style="font-size:0.8rem;color:rgba(255,255,255,0.5)">📍 {{ project.location }}</span>{% endif %}
+      {% if project.area_sqft %}<span style="font-size:0.8rem;color:rgba(255,255,255,0.5)">📐 {{ project.area_sqft }} sq.ft</span>{% endif %}
+      {% if project.completed_date %}<span style="font-size:0.8rem;color:rgba(255,255,255,0.5)">📅 {{ project.completed_date|date:"M Y" }}</span>{% endif %}
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <!-- Main image -->
+    {% if project.main_image %}
+    <div style="width:100%;height:60vh;overflow:hidden;margin-bottom:1rem" class="reveal">
+      <img src="{{ project.main_image.url }}" alt="{{ project.title }}" style="width:100%;height:100%;object-fit:cover">
+    </div>
+    {% endif %}
+
+    <!-- Gallery grid -->
+    {% if project.gallery.all %}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:3rem">
+      {% for img in project.gallery.all %}
+      <div style="height:280px;overflow:hidden" class="reveal">
+        <img src="{{ img.image.url }}" alt="{{ img.caption|default:project.title }}" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease">
+        onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Before/After -->
+    {% if project.before_image and project.after_image %}
+    <div class="reveal" style="margin-bottom:3rem">
+      <div class="section-label" style="margin-bottom:1.5rem">Before & After</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div style="position:relative;height:350px;overflow:hidden">
+          <img src="{{ project.before_image.url }}" alt="Before" style="width:100%;height:100%;object-fit:cover">
+          <div style="position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,0.8);color:var(--gold);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid var(--gold)">Before</div>
+        </div>
+        <div style="position:relative;height:350px;overflow:hidden">
+          <img src="{{ project.after_image.url }}" alt="After" style="width:100%;height:100%;object-fit:cover">
+          <div style="position:absolute;top:1rem;left:1rem;background:rgba(0,0,0,0.8);color:var(--gold);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;padding:0.3rem 0.8rem;border:1px solid var(--gold)">After</div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Description + Video -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start" class="reveal">
+      <div>
+        <div class="section-label">Project Overview</div>
+        <div class="gold-line"></div>
+        {% if project.description %}
+        <p style="font-size:0.95rem;line-height:1.9;color:rgba(255,255,255,0.7)">{{ project.description }}</p>
+        {% endif %}
+        <div style="margin-top:2rem">
+          <a href="{% url 'consultation' %}" class="btn btn-gold">Start Your Project</a>
+        </div>
+      </div>
+      <div>
+        {% if project.video_url %}
+        <div style="aspect-ratio:16/9;overflow:hidden">
+          <iframe src="{{ project.video_url }}" style="width:100%;height:100%;border:none" allowfullscreen></iframe>
+        </div>
+        {% else %}
+        <div style="border:1px solid var(--border);padding:2.5rem">
+          <div class="section-label" style="margin-bottom:1.2rem">Project Details</div>
+          <div style="display:grid;gap:1rem">
+            <div style="display:flex;justify-content:space-between;padding:0.8rem 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="font-size:0.8rem;color:var(--grey)">Category</span><span style="font-size:0.85rem">{{ project.get_category_display }}</span></div>
+            {% if project.location %}<div style="display:flex;justify-content:space-between;padding:0.8rem 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="font-size:0.8rem;color:var(--grey)">Location</span><span style="font-size:0.85rem">{{ project.location }}</span></div>{% endif %}
+            {% if project.area_sqft %}<div style="display:flex;justify-content:space-between;padding:0.8rem 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span style="font-size:0.8rem;color:var(--grey)">Area</span><span style="font-size:0.85rem">{{ project.area_sqft }} sq.ft</span></div>{% endif %}
+            {% if project.completed_date %}<div style="display:flex;justify-content:space-between;padding:0.8rem 0"><span style="font-size:0.8rem;color:var(--grey)">Completed</span><span style="font-size:0.85rem">{{ project.completed_date|date:"F Y" }}</span></div>{% endif %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if related %}
+<section class="section-dark">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:2.5rem">
+      <div class="section-label">More Projects</div>
+      <div class="gold-line"></div>
+      <h2 class="section-title">Similar Work</h2>
+    </div>
+    <div class="portfolio-grid">
+      {% for proj in related %}
+      <a href="{% url 'project_detail' proj.pk %}" class="portfolio-item reveal">
+        {% if proj.main_image %}<img src="{{ proj.main_image.url }}" alt="{{ proj.title }}" class="portfolio-img">
+        {% else %}<div class="portfolio-placeholder">🏠</div>{% endif %}
+        <div class="portfolio-overlay">
+          <div class="portfolio-info"><h3>{{ proj.title }}</h3><p>{{ proj.get_category_display }}</p></div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

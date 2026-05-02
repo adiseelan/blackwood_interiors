@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Instant Quotation{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Pricing Tool</div>
+    <div class="gold-line"></div>
+    <h1 class="section-title">Instant Quotation</h1>
+    <p style="max-width:480px;margin-top:1rem;color:rgba(255,255,255,0.55)">Get a ballpark estimate in seconds — based on your area and service type.</p>
+  </div>
+</div>
+
+<section>
+  <div class="container-sm">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
+
+      <!-- Form -->
+      <div class="reveal">
+        <div style="border:1px solid var(--border);padding:3rem">
+          <div class="section-label" style="margin-bottom:0.5rem">Calculate Your Cost</div>
+          <div class="gold-line"></div>
+          <h2 style="font-family:var(--font-serif);font-size:1.8rem;margin-bottom:2rem">Get Your Estimate</h2>
+          <form method="post" id="quoteForm">
+            {% csrf_token %}
+            <div style="display:flex;flex-direction:column;gap:1.2rem">
+              <div class="form-group">
+                <label class="form-label">Your Name *</label>
+                {{ form.name }}
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone Number *</label>
+                {{ form.phone }}
+              </div>
+              <div class="form-group">
+                <label class="form-label">Service Type *</label>
+                {{ form.service_type }}
+              </div>
+              <div class="form-group">
+                <label class="form-label">Area (Sq.ft) *</label>
+                {{ form.area_sqft }}
+              </div>
+              <div class="form-group">
+                <label class="form-label">Design Style</label>
+                {{ form.style }}
+              </div>
+
+              <!-- Live estimate box -->
+              <div id="live-estimate-box" style="border:1px solid var(--gold);padding:1.2rem;text-align:center;display:none;background:rgba(201,168,76,0.05)">
+                <div style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem">Live Estimate</div>
+                <div id="live-estimate" style="font-family:var(--font-serif);font-size:2rem;color:var(--gold)">₹0</div>
+                <div style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:0.3rem">*Indicative only. Final quote after site visit.</div>
+              </div>
+
+              <button type="submit" class="btn btn-gold" style="justify-content:center">
+                Get Detailed Quote
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Result + Rate card -->
+      <div class="reveal">
+        {% if estimated %}
+        <div class="quote-result" style="margin-bottom:2rem">
+          <div style="font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Your Estimate for {{ service_label }}</div>
+          <div class="quote-amount">₹{{ estimated|floatformat:0 }}</div>
+          <p style="font-size:0.8rem;color:rgba(255,255,255,0.4);margin-top:0.5rem">*Indicative estimate. Actual cost may vary based on materials and finishes.</p>
+          <div style="margin-top:1.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+            <a href="{% url 'consultation' %}" class="btn btn-gold btn-sm">Book Free Consultation</a>
+            <a href="https://wa.me/{{ whatsapp_number }}" target="_blank" class="btn btn-whatsapp btn-sm">WhatsApp Us</a>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Rate card -->
+        <div style="border:1px solid var(--border);padding:2rem">
+          <div class="section-label" style="margin-bottom:1.2rem">Rate Reference</div>
+          {% for item in "12345678"|make_list %}
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0.7rem 0;border-bottom:1px solid rgba(255,255,255,0.06)">
+            <span style="font-size:0.82rem">
+              {% if forloop.counter == 1 %}Full Interior Design
+              {% elif forloop.counter == 2 %}Modular Kitchen
+              {% elif forloop.counter == 3 %}House Construction
+              {% elif forloop.counter == 4 %}False Ceiling
+              {% elif forloop.counter == 5 %}Wooden Flooring
+              {% elif forloop.counter == 6 %}Vinyl Flooring
+              {% elif forloop.counter == 7 %}Epoxy Flooring
+              {% else %}Landscape Design{% endif %}
+            </span>
+            <span style="font-size:0.82rem;color:var(--gold)">
+              {% if forloop.counter == 1 %}₹1,800/sqft
+              {% elif forloop.counter == 2 %}₹1,200/sqft
+              {% elif forloop.counter == 3 %}₹2,200/sqft
+              {% elif forloop.counter == 4 %}₹85/sqft
+              {% elif forloop.counter == 5 %}₹180/sqft
+              {% elif forloop.counter == 6 %}₹120/sqft
+              {% elif forloop.counter == 7 %}₹150/sqft
+              {% else %}₹250/sqft{% endif %}
+            </span>
+          </div>
+          {% endfor %}
+          <p style="font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:1rem">*Starting rates. Final cost depends on materials, finishes, and site conditions.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% block extra_js %}
+<script>
+const rates = {
+  'modular_kitchen':1200,'false_ceiling':85,'full_interior':1800,
+  'wooden_flooring':180,'vinyl_flooring':120,'epoxy_flooring':150,'house_construction':2200
+};
+const svc = document.querySelector('#id_service_type');
+const area = document.querySelector('#id_area_sqft');
+const box = document.querySelector('#live-estimate-box');
+const result = document.querySelector('#live-estimate');
+function calc(){
+  const s=svc?.value, a=parseInt(area?.value);
+  if(s && a && rates[s]){ result.textContent='₹'+(rates[s]*a).toLocaleString('en-IN'); box.style.display='block'; }
+  else{ box.style.display='none'; }
+}
+svc?.addEventListener('change',calc); area?.addEventListener('input',calc);
+</script>
+{% endblock %}
+{% endblock %}
